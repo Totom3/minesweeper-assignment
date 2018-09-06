@@ -1,6 +1,5 @@
 package minesweeper;
 
-import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -17,6 +16,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 /**
@@ -26,55 +26,55 @@ import javax.swing.SwingConstants;
 public class MainMenu extends JFrame {
 
 	public static final boolean DEBUG_MODE = true;
+	private static final Font TITLE_FONT = new Font("Courier New", Font.BOLD, 48);
+	private static final Font DEFAULT_FONT = new Font("Courier New", Font.ITALIC, 24);
 
-	private final Font defaultFont = new Font("Courier New", Font.ITALIC, 24);
-	private final Font titleFont = new Font("Courier New", Font.BOLD, 48);
-	private final JLabel gamesWon; //will display how many games are won
-	private final JLabel gamesLost;
-
-	private final JLabel titleLabel;
-
-	protected int winCounter = 0;
-	protected int loseCounter = 0;
-
-	private JLabel gameInProgress; //display if a game is in progress or not.
 	private final JButton startGame;
+	private final JLabel titleLabel;
+	private final JLabel gamesWonLabel;
+	private final JLabel gamesLostLabel;
+	private final JLabel gameInProgressLabel;
 
-	public MainMenu(int width, int height) {
-		//NEED TO ADD A TITLE FOR THE MAIN MENU WINDOW
-		titleLabel = new JLabel("MINESWEEPER");
-		titleLabel.setFont(titleFont);
+	private int winCounter;
+	private int loseCounter;
+
+	public MainMenu() {
+		// Initialize components
+		this.startGame = new JButton("Start Game");
+		this.titleLabel = new JLabel("MINESWEEPER");
+		this.gamesWonLabel = new JLabel("Games won: " + winCounter);
+		this.gamesLostLabel = new JLabel("Games lost: " + loseCounter);
+		this.gameInProgressLabel = new JLabel("^ Start a new game ^");
+
+		initGUI();
+	}
+
+	private void initGUI() {
+		titleLabel.setFont(TITLE_FONT);
+		gamesWonLabel.setFont(DEFAULT_FONT);
+		gamesLostLabel.setFont(DEFAULT_FONT);
+		gameInProgressLabel.setFont(DEFAULT_FONT);
+
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-		gameInProgress = new JLabel("^ Start a new game ^");
-		gameInProgress.setFont(defaultFont);
-		gameInProgress.setHorizontalAlignment(SwingConstants.CENTER);
-
-		gamesWon = new JLabel("Games won: " + winCounter); //will display the player's win/loss record (winCounter, and loseCounter respectively)
-		gamesWon.setHorizontalAlignment(SwingConstants.CENTER); //centers the text
-		gamesWon.setFont(defaultFont);
-		//gamesWon.setBorder(new LineBorder(Color.blue));
-
-		gamesLost = new JLabel("Games lost: " + loseCounter);
-		gamesLost.setHorizontalAlignment(SwingConstants.CENTER);
-		gamesLost.setFont(defaultFont);
-
-		setSize(width, height); //sets size of the main menu window
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		startGame = new JButton("Start Game");
+		gamesWonLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		gamesLostLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		gameInProgressLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		//when gameInProgress = true, display: "Game in Progress", AND disable the start button
 		//when it's false, display "Start a new game"
-
 		startGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				GameBoard newGame = new GameBoard(MainMenu.this);
-				startGame.setEnabled(false); //disables Start Game button until game is ended (check onGameEnd method)
-				gameInProgress.setText("Game is in progress!");
-				gameInProgress.setHorizontalAlignment(SwingConstants.CENTER);
+				
+				// Disable Start Game button until game is ended (check onGameEnd method)
+				startGame.setEnabled(false); 
+				gameInProgressLabel.setText("Game is in progress!");
+				gameInProgressLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				
+				// Start new game
 				newGame.onStart();
 				newGame.addWindowListener(new WindowAdapter() {
+					@Override
 					public void windowClosing(WindowEvent we) {
 						onGameEnd(false);
 					}
@@ -82,17 +82,22 @@ public class MainMenu extends JFrame {
 			}
 		});
 
-		Container mainMenu = getContentPane();
-		mainMenu.setLayout(new GridLayout(5, 1));
-		mainMenu.add(titleLabel);
-		mainMenu.add(startGame);
-		mainMenu.add(gamesWon);
-		mainMenu.add(gamesLost);
-		mainMenu.add(gameInProgress);
+		JPanel pane = new JPanel(new GridLayout(5, 1));
+		pane.add(titleLabel);
+		pane.add(startGame);
+		pane.add(gamesWonLabel);
+		pane.add(gamesLostLabel);
+		pane.add(gameInProgressLabel);
+		setContentPane(pane);
+
+		setSize(640, 480);
+		setLocationRelativeTo(null);
+		setTitle("Minesweeper Game");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public static void main(String[] args) {
-		MainMenu window = new MainMenu(640, 480);
+		MainMenu window = new MainMenu();
 		window.setVisible(true);
 	}
 
@@ -108,10 +113,10 @@ public class MainMenu extends JFrame {
 
 		if (winOrLose) {
 			winCounter++;
-			gamesWon.setText("Games won: " + winCounter);
+			gamesWonLabel.setText("Games won: " + winCounter);
 		} else {
 			loseCounter++;
-			gamesLost.setText("Games lost: " + loseCounter);
+			gamesLostLabel.setText("Games lost: " + loseCounter);
 		}
 
 		try {
