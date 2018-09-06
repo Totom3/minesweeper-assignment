@@ -18,6 +18,12 @@ public interface IGameLogic {
 	void generateBoard(int clickX, int clickY);
 
 	/**
+	 * @return {@code true} if the board has been generated; {@code false}
+	 * otherwise.
+	 */
+	boolean isBoardGenerated();
+
+	/**
 	 * @return the game board. This is the actual copy and not a mirror; updates
 	 * made to the board reflect in the returned value.
 	 */

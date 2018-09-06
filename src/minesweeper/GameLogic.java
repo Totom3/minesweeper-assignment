@@ -41,12 +41,19 @@ public class GameLogic implements IGameLogic {
 				// Update rank of adjacent tiles
 				for (int i = -1; i <= 1; ++i) {
 					for (int j = -1; j <= 1; ++j) {
-						if (!isCoordValid(i) || !isCoordValid(j)) {
+						int x1 = i + coords.x;
+						int y1 = j + coords.y;
+						if (!isCoordValid(x1) || !isCoordValid(y1)) {
 							continue;
 						}
 
-						// Increment rank (nearby bomb)
-						++rank[i + coords.x][j + coords.y];
+						// Check that we are not erasing a bomb
+						if (rank[x1][y1] == -1) {
+							continue;
+						}
+
+						// Increment rank
+						++rank[x1][y1];
 					}
 				}
 
@@ -67,6 +74,11 @@ public class GameLogic implements IGameLogic {
 	}
 
 	@Override
+	public boolean isBoardGenerated() {
+		return generated;
+	}
+
+	@Override
 	public Tile[][] getBoard() {
 		return board;
 	}
@@ -84,7 +96,9 @@ public class GameLogic implements IGameLogic {
 		// Gather tiles to be uncovered
 		Set<Tile> uncovered = new HashSet<>();
 		uncovered.add(clickedTile);
-		collectTilesToBeUncovered(clickedTile, uncovered);
+		if (clickedTile.getRank() == 0) {
+			collectTilesToBeUncovered(clickedTile, uncovered);
+		}
 
 		// Check for win
 		this.coveredTiles -= uncovered.size();
@@ -95,12 +109,14 @@ public class GameLogic implements IGameLogic {
 		for (int i = -1; i <= 1; ++i) {
 			for (int j = -1; j <= 1; ++j) {
 				// Check that coordinates are valid
-				if (!isCoordValid(i) || !isCoordValid(j)) {
+				int x1 = i + tile.getX();
+				int y1 = j + tile.getY();
+				if (!isCoordValid(x1) || !isCoordValid(y1)) {
 					continue;
 				}
 
 				// Get tile relative to this
-				Tile t = board[i + tile.getX()][j + tile.getY()];
+				Tile t = board[x1][y1];
 
 				// Do not proceed if mine or already uncovered
 				if (t.getRank() < 0 || t.getStatus() != TileStatus.COVERED) {

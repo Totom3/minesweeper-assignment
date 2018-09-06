@@ -35,7 +35,7 @@ public class MainMenu extends JFrame implements IMainMenu {
     private final JLabel gamesWon; //will display how many games are won
     private final JLabel gamesLost;
     
-    private final JLabel MINESWEEPER_TITLE;
+    private final JLabel titleLabel;
     
     protected int winCounter = 0;
     protected int loseCounter = 0;
@@ -46,9 +46,9 @@ public class MainMenu extends JFrame implements IMainMenu {
 
     public MainMenu(int width, int height) {
         //NEED TO ADD A TITLE FOR THE MAIN MENU WINDOW
-        MINESWEEPER_TITLE = new JLabel("MINESWEEPER");
-        MINESWEEPER_TITLE.setFont(titleFont);
-        MINESWEEPER_TITLE.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel = new JLabel("MINESWEEPER");
+        titleLabel.setFont(titleFont);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         
         gameInProgress = new JLabel("^ Start a new game ^");
         gameInProgress.setFont(defaultFont);
@@ -65,6 +65,7 @@ public class MainMenu extends JFrame implements IMainMenu {
         
         
         setSize(width, height); //sets size of the main menu window
+		setLocationRelativeTo(null);
         
         startGame = new JButton("Start Game");
         //when gameInProgress = true, display: "Game in Progress", AND disable the start button
@@ -76,13 +77,15 @@ public class MainMenu extends JFrame implements IMainMenu {
                 GameBoard newGame = new GameBoard(MainMenu.this);
                 startGame.setEnabled(false); //disables Start Game button until game is ended (check onGameEnd method)
                 gameInProgress.setText("Game is in progress!");
-                gameInProgress.setHorizontalAlignment(SwingConstants.CENTER);                
+                gameInProgress.setHorizontalAlignment(SwingConstants.CENTER);   
+				
+				newGame.onStart();
             }
         });
         
         Container mainMenu = getContentPane();
         mainMenu.setLayout(new GridLayout(5, 1));
-        mainMenu.add(MINESWEEPER_TITLE);
+        mainMenu.add(titleLabel);
         mainMenu.add(startGame);
         mainMenu.add(gamesWon);
         mainMenu.add(gamesLost);
