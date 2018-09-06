@@ -16,6 +16,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -30,6 +33,9 @@ public class MainMenu extends JFrame {
 	private static final Font DEFAULT_FONT = new Font("Courier New", Font.ITALIC, 24);
 
 	private final JButton startGame;
+	private final JMenuBar menuBar;
+	private final JMenu menu;
+	private final JMenuItem itemDebug;
 	private final JLabel titleLabel;
 	private final JLabel gamesWonLabel;
 	private final JLabel gamesLostLabel;
@@ -45,7 +51,12 @@ public class MainMenu extends JFrame {
 		this.gamesWonLabel = new JLabel("Games won: " + winCounter);
 		this.gamesLostLabel = new JLabel("Games lost: " + loseCounter);
 		this.gameInProgressLabel = new JLabel("^ Start a new game ^");
-
+		this.menuBar = new JMenuBar();
+		this.menu = new JMenu("Options");
+		this.itemDebug = new JMenuItem("Enable Debug Mode");
+		menuBar.add(menu);
+		menu.add(itemDebug);
+		this.setJMenuBar(menuBar);
 		initGUI();
 	}
 
@@ -59,6 +70,8 @@ public class MainMenu extends JFrame {
 		gamesWonLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		gamesLostLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		gameInProgressLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		
 		
 		//when gameInProgress = true, display: "Game in Progress", AND disable the start button
 		//when it's false, display "Start a new game"
@@ -81,7 +94,12 @@ public class MainMenu extends JFrame {
 				});
 			}
 		});
-
+		
+		itemDebug.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent ev) {
+			//change debug value
+        }
+    });
 		JPanel pane = new JPanel(new GridLayout(5, 1));
 		pane.add(titleLabel);
 		pane.add(startGame);
