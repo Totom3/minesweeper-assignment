@@ -127,7 +127,9 @@ public class GameBoard extends JFrame {
 					for (int i = 0; i < GameLogic.BOARD_SIZE; ++i) {
 						for (int j = 0; j < GameLogic.BOARD_SIZE; ++j) {
 							// Flag if mine
-							if (gameLogic.getBoard()[i][j].isMine()) {
+							Tile tile = gameLogic.getBoard()[i][j];
+							if (tile.isMine()) {
+								tile.setStatus(TileStatus.FLAGGED);
 								boardButtons[i][j].setText("M");
 							}
 						}
@@ -155,6 +157,10 @@ public class GameBoard extends JFrame {
 				return;
 			}
 
+			if (gameLogic.getBoard()[x][y].getStatus() == TileStatus.FLAGGED) {
+				return;
+			}
+			
 			// Trigger a click
 			ClickResult result = gameLogic.onClick(x, y);
 			switch (result.getResult()) {
