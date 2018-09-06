@@ -11,6 +11,7 @@ import java.util.Set;
 public class GameLogic implements IGameLogic {
 
 	private boolean generated;
+	private int coveredTiles;
 	private final Tile[][] board;
 
 	public GameLogic() {
@@ -35,6 +36,7 @@ public class GameLogic implements IGameLogic {
 			Coordinates coords = new Coordinates(rand.nextInt(GameLogic.BOARD_SIZE), rand.nextInt(GameLogic.BOARD_SIZE));
 
 			// If valid, update the rank of nearby tiles
+			// Make sure the clicked coordinate is not a bomb and is not adjacent to a bomb
 			if (!coords.isAdjacent(clickCoords) && bombs.add(coords)) {
 				// Update rank of adjacent tiles
 				for (int i = -1; i <= 1; ++i) {
@@ -61,6 +63,7 @@ public class GameLogic implements IGameLogic {
 		}
 
 		this.generated = true;
+		this.coveredTiles = (BOARD_SIZE * BOARD_SIZE) - MINES_COUNT;
 	}
 
 	@Override
@@ -70,7 +73,50 @@ public class GameLogic implements IGameLogic {
 
 	@Override
 	public ClickResult onClick(int x, int y) {
-		
+		Tile clickedTile = board[x][y];
+		int rank = clickedTile.getRank();
+
+		// If a mine was clicked, player loses
+		if (rank < 0) {
+			return new ClickResult(ClickResult.LOSE, new HashSet<>());
+		}
+
+		// Gather tiles to be uncovered
+		Set<Tile> uncovered = new HashSet<>();
+		uncovered.add(clickedTile);
+		collectTilesToBeUncovered(clickedTile, uncovered);
+
+		// Check for win
+		this.coveredTiles -= uncovered.size();
+		return new ClickResult(coveredTiles == 0 ? ClickResult.WIN : ClickResult.CONTINUE, uncovered);
+	}
+
+	private void collectTilesToBeUncovered(Tile tile, Set<Tile> set) {
+		for (int i = -1; i <= 1; ++i) {
+			for (int j = -1; j <= 1; ++j) {
+				// Check that coordinates are valid
+				if (!isCoordValid(i) || !isCoordValid(j)) {
+					continue;
+				}
+
+				// Get tile relative to this
+				Tile t = board[i + tile.getX()][j + tile.getY()];
+
+				// Do not proceed if mine or already uncovered
+				if (t.getRank() < 0 || t.getStatus() != TileStatus.COVERED) {
+					continue;
+				}
+
+				if (!set.add(t)) {
+					continue;
+				}
+
+				// Recurvsive check
+				if (t.getRank() == 0) {
+					collectTilesToBeUncovered(t, set);
+				}
+			}
+		}
 	}
 
 	private static boolean isCoordValid(int x) {
