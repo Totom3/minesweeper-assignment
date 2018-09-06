@@ -12,38 +12,42 @@ import javax.swing.JFrame;
  *
  * @author Frankie
  */
+public class GameBoard extends JFrame implements IGameBoard {
 
-public class GameBoard  extends JFrame implements IGameBoard{
+	/**
+	 * Reference to the main menu. Used to notify it when the game ends.
+	 */
+	private final IMainMenu mainMenu;
 
-    int width;
-    int height;
-    /**
-     * These buttons will represent each tile, display the status of the tile,  and handle onClick events
-    */
-    JButton[][] boardTiles = new JButton[8][8];
-    
-    //to refer to board length, don't use 8, use BOARD_SIZE
-    /**
-     * creates game board object
-     */
-    GameBoard(int width, int height) { 
-        MainMenu startMenu = new MainMenu(640, 480);
-        setSize(width, height);
-    }
-         
-    
-    @Override
-    public void onStart() { 
-        //create new game of GameBoard
-    }
-    
-    /**
-     * Main method will deal with the instantiation of the game, setting of window size, etc.
-     * @param args
-     */
-    public static void main(String[] args) {
-        GameBoard game = new GameBoard(1000, 1000);
-        game.setVisible(true);
-    }
-    
+	/**
+	 * The brains of the game. Provides logic for board generation and click
+	 * handling.
+	 */
+	private final IGameLogic gameLogic;
+
+	/**
+	 * These buttons will represent each tile, display the status of the tile,
+	 * and handle onClick events.
+	 */
+	private final JButton[][] boardButtons = new JButton[IGameLogic.BOARD_SIZE][IGameLogic.BOARD_SIZE];
+
+	/**
+	 * Creates a game board object.
+	 *
+	 * @param mainMenu the main menu reference
+	 */
+	public GameBoard(IMainMenu mainMenu) {
+		this.mainMenu = mainMenu;
+		this.gameLogic = new GameLogic();
+		
+		//initGUI();
+	}
+	
+	
+
+	@Override
+	public void onStart() {
+
+	}
+
 }
