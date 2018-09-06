@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package minesweeper;
 
 import java.awt.Dimension;
@@ -21,20 +16,20 @@ import javax.swing.JPanel;
  *
  * @author Frankie
  */
-public class GameBoard extends JFrame implements IGameBoard {
+public class GameBoard extends JFrame {
 
 	private static final Font BUTTON_FONT = new Font("monospace", Font.BOLD, 30);
 
 	/**
 	 * Reference to the main menu. Used to notify it when the game ends.
 	 */
-	private final IMainMenu mainMenu;
+	private final MainMenu mainMenu;
 
 	/**
 	 * The brains of the game. Provides logic for board generation and click
 	 * handling.
 	 */
-	private final IGameLogic gameLogic;
+	private final GameLogic gameLogic;
 
 	/**
 	 * These buttons will represent each tile, display the status of the tile,
@@ -52,27 +47,30 @@ public class GameBoard extends JFrame implements IGameBoard {
 	 *
 	 * @param mainMenu the main menu reference
 	 */
-	public GameBoard(IMainMenu mainMenu) {
+	public GameBoard(MainMenu mainMenu) {
 		this.mainMenu = mainMenu;
 		this.gameLogic = new GameLogic();
-		this.boardButtons = new JButton[IGameLogic.BOARD_SIZE][IGameLogic.BOARD_SIZE];
+		this.boardButtons = new JButton[GameLogic.BOARD_SIZE][GameLogic.BOARD_SIZE];
 
 		initGUI();
 	}
 
+	/**
+	 * Constructs the game board GUI.
+	 */
 	private void initGUI() {
 		final int buttonSize = 100;
-		final int screenSize = IGameLogic.BOARD_SIZE * buttonSize;
+		final int screenSize = GameLogic.BOARD_SIZE * buttonSize;
 
-		JPanel panel = new JPanel(new GridLayout(IGameLogic.BOARD_SIZE, IGameLogic.BOARD_SIZE));
+		JPanel panel = new JPanel(new GridLayout(GameLogic.BOARD_SIZE, GameLogic.BOARD_SIZE));
 		setContentPane(panel);
 		setSize(screenSize, screenSize);
 		setLocationRelativeTo(null);
 		setTitle("Minesweeper Game");
 
 		// Initialize grid
-		for (int i = 0; i < IGameLogic.BOARD_SIZE; ++i) {
-			for (int j = 0; j < IGameLogic.BOARD_SIZE; ++j) {
+		for (int i = 0; i < GameLogic.BOARD_SIZE; ++i) {
+			for (int j = 0; j < GameLogic.BOARD_SIZE; ++j) {
 				JButton button = new JButton();
 				button.setFont(BUTTON_FONT);
 				button.setFocusable(false);
@@ -103,11 +101,20 @@ public class GameBoard extends JFrame implements IGameBoard {
 		});
 	}
 
-	@Override
+	/**
+	 * Opens the board game window and allows the game to start.
+	 */
 	public void onStart() {
 		this.setVisible(true);
 	}
 
+	/**
+	 * Generates a click listener for the tile button at the given coordinates.
+	 *
+	 * @param x the x coordinate of the tile.
+	 * @param y the y coordinate of the tile.
+	 * @return a click handler for the button.
+	 */
 	private ActionListener listener(int x, int y) {
 		return (ae) -> {
 			// Check if board has been generated
@@ -117,8 +124,8 @@ public class GameBoard extends JFrame implements IGameBoard {
 
 				// Flag all mines if in debug mode
 				if (MainMenu.DEBUG_MODE) {
-					for (int i = 0; i < IGameLogic.BOARD_SIZE; ++i) {
-						for (int j = 0; j < IGameLogic.BOARD_SIZE; ++j) {
+					for (int i = 0; i < GameLogic.BOARD_SIZE; ++i) {
+						for (int j = 0; j < GameLogic.BOARD_SIZE; ++j) {
 							// Flag if mine
 							if (gameLogic.getBoard()[i][j].isMine()) {
 								boardButtons[i][j].setText("M");
@@ -168,6 +175,11 @@ public class GameBoard extends JFrame implements IGameBoard {
 		};
 	}
 
+	/**
+	 * Uncovers the given set of tiles and updates the buttons accordingly.
+	 *
+	 * @param tiles the tiles to uncover.
+	 */
 	private void uncoverTiles(Set<Tile> tiles) {
 		for (Tile tile : tiles) {
 			// Update status
@@ -180,6 +192,15 @@ public class GameBoard extends JFrame implements IGameBoard {
 		}
 	}
 
+	/**
+	 * Generates a {@link GridBagConstraints} instance for the given
+	 * coordinates.
+	 *
+	 * @param x the x coordinate.
+	 * @param y the y coordinate.
+	 * @return constraints to be applied to a component in a
+	 * {@link GridBagLayout}.
+	 */
 	private static GridBagConstraints constr(int x, int y) {
 		GridBagConstraints constr = new GridBagConstraints();
 		constr.gridx = x;
@@ -188,12 +209,5 @@ public class GameBoard extends JFrame implements IGameBoard {
 		constr.weighty = 1;
 		constr.fill = GridBagConstraints.BOTH;
 		return constr;
-	}
-
-	public static void main(String[] args) {
-		MainMenu menu = null;
-		GameBoard board = new GameBoard(menu);
-		board.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		board.onStart();
 	}
 }

@@ -26,7 +26,7 @@ import javax.swing.SwingConstants;
 public class MainMenu extends JFrame {
 
 	public static final boolean DEBUG_MODE = true;
-	
+
 	private final Font defaultFont = new Font("Courier New", Font.ITALIC, 24);
 	private final Font titleFont = new Font("Courier New", Font.BOLD, 48);
 	private final JLabel gamesWon; //will display how many games are won
@@ -67,14 +67,14 @@ public class MainMenu extends JFrame {
 		//when gameInProgress = true, display: "Game in Progress", AND disable the start button
 		//when it's false, display "Start a new game"
 
-		startGame.addActionListener(new ActionListener() {			
+		startGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				GameBoard newGame = new GameBoard(MainMenu.this);
 				startGame.setEnabled(false); //disables Start Game button until game is ended (check onGameEnd method)
 				gameInProgress.setText("Game is in progress!");
 				gameInProgress.setHorizontalAlignment(SwingConstants.CENTER);
 				newGame.onStart();
-				newGame.addWindowListener(new WindowAdapter() {					
+				newGame.addWindowListener(new WindowAdapter() {
 					public void windowClosing(WindowEvent we) {
 						onGameEnd(false);
 					}
@@ -102,7 +102,6 @@ public class MainMenu extends JFrame {
 	 *
 	 * @param winOrLose
 	 */
-	
 	public void onGameEnd(boolean winOrLose) {
 
 		startGame.setEnabled(true); //re-enables the "start game" button when the game ends

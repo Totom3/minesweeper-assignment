@@ -8,17 +8,25 @@ import java.util.Set;
  *
  * @author Tomer Moran
  */
-public class GameLogic implements IGameLogic {
+public class GameLogic {
 
-	private boolean generated;
+	public static final int BOARD_SIZE = 8;
+	public static final int MINES_COUNT = 10;
+
 	private int coveredTiles;
+	private boolean generated;
 	private final Tile[][] board;
 
 	public GameLogic() {
 		this.board = new Tile[GameLogic.BOARD_SIZE][GameLogic.BOARD_SIZE];
 	}
 
-	@Override
+	/**
+	 * Generates the board.
+	 *
+	 * @param clickX the x coordinate the player clicked.
+	 * @param clickY the y coordinate the player clicked.
+	 */
 	public void generateBoard(int clickX, int clickY) {
 		if (generated) {
 			throw new IllegalStateException("board already generated");
@@ -73,17 +81,32 @@ public class GameLogic implements IGameLogic {
 		this.coveredTiles = (BOARD_SIZE * BOARD_SIZE) - MINES_COUNT;
 	}
 
-	@Override
+	/**
+	 * @return {@code true} if the board has been generated; {@code false}
+	 * otherwise.
+	 */
 	public boolean isBoardGenerated() {
 		return generated;
 	}
 
-	@Override
+	/**
+	 * @return the game board. This is the actual copy and not a mirror; updates
+	 * made to the board reflect in the returned value.
+	 */
 	public Tile[][] getBoard() {
 		return board;
 	}
 
-	@Override
+	/**
+	 * Handles a click on the given tile. The result of the click is stored in
+	 * the return value. A click can lead to (1) a loss; (2) a win; (3) the
+	 * normal continuation of the game, with the possibility of some tiles being
+	 * uncovered.
+	 *
+	 * @param x the x coordinate the player clicked.
+	 * @param y the y coordinate the player clicked.
+	 * @return
+	 */
 	public ClickResult onClick(int x, int y) {
 		Tile clickedTile = board[x][y];
 		int rank = clickedTile.getRank();
