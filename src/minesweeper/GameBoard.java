@@ -27,6 +27,7 @@ public class GameBoard  extends JFrame implements IGameBoard{
      * creates game board object
      */
     GameBoard(int width, int height) { 
+        MainMenu startMenu = new MainMenu(640, 480);
         setSize(width, height);
     }
          
