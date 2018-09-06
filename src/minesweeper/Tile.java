@@ -42,19 +42,19 @@ public class Tile {
 	}
 
 	/**
-	 * @return the x coordinate of this tile. 
+	 * @return the x coordinate of this tile.
 	 */
 	public int getX() {
 		return x;
 	}
-	
+
 	/**
-	 * @return the y coordinate of this tile. 
+	 * @return the y coordinate of this tile.
 	 */
 	public int getY() {
 		return y;
 	}
-	
+
 	/**
 	 * @return the status of this tile. This can change as the game progresses.
 	 */
@@ -69,6 +69,30 @@ public class Tile {
 	 */
 	public void setStatus(TileStatus status) {
 		this.status = status;
+	}
+
+	/**
+	 * Toggles the flag status of this tile between {@link TileStatus#COVERED}
+	 * and {@link TileStatus#FLAGGED}. If the status is
+	 * {@link TileStatus#UNCOVERED}, {@link IllegalStateException} is thrown.
+	 *
+	 * @return the new status.
+	 */
+	public TileStatus toggleFlag() {
+		switch (status) {
+			case COVERED:
+				this.status = TileStatus.FLAGGED;
+				break;
+			case FLAGGED:
+				this.status = TileStatus.COVERED;
+				break;
+			case UNCOVERED:
+				throw new IllegalStateException();
+			default:
+				throw new AssertionError("unexpected status " + status);
+		}
+		
+		return status;
 	}
 
 	/**
