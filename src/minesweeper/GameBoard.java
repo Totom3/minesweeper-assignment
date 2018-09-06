@@ -9,18 +9,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.beans.PropertyChangeListener;
 import java.util.Set;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 
 /**
  *
@@ -119,10 +114,26 @@ public class GameBoard extends JFrame implements IGameBoard {
 			if (!gameLogic.isBoardGenerated()) {
 				// Start game
 				gameLogic.generateBoard(x, y);
-			}
 
-			// Flag the button
-			if (isCtrlPressed) {
+				// Flag all mines if in debug mode
+				if (MainMenu.DEBUG_MODE) {
+					for (int i = 0; i < IGameLogic.BOARD_SIZE; ++i) {
+						for (int j = 0; j < IGameLogic.BOARD_SIZE; ++j) {
+							// Flag if mine
+							if (gameLogic.getBoard()[i][j].isMine()) {
+								boardButtons[i][j].setText("M");
+							}
+						}
+					}
+				}
+			} else if (isCtrlPressed) {
+				// Flag the tile
+				// Prevent flagging while in debug mode
+				if (MainMenu.DEBUG_MODE) {
+					System.out.println("Cannot flag tiles when in debug mode");
+					return;
+				}
+
 				JButton button = boardButtons[x][y];
 				Tile tile = gameLogic.getBoard()[x][y];
 				switch (tile.toggleFlag()) {

@@ -91,7 +91,7 @@ public class Tile {
 			default:
 				throw new AssertionError("unexpected status " + status);
 		}
-		
+
 		return status;
 	}
 

@@ -10,11 +10,13 @@ package minesweeper;
  * @author Frankie
  */
 public interface IMainMenu {
-    /**
-     * will trigger when game ends
-     * @param win
-     * @param lose 
-     */
-    void onGameEnd(boolean winOrLose); 
-    
+
+	/**
+	 * will trigger when game ends
+	 *
+	 * @param win
+	 * @param lose
+	 */
+	void onGameEnd(boolean winOrLose);
+
 }

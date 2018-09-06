@@ -10,8 +10,9 @@ package minesweeper;
  * @author Frankie
  */
 public interface IGameBoard {
-    /**
-     * triggers when game is started/instantiated
-     */
-    void onStart(); 
+
+	/**
+	 * triggers when game is started/instantiated
+	 */
+	void onStart();
 }
