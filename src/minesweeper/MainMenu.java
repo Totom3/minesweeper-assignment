@@ -89,7 +89,7 @@ public class MainMenu extends JFrame {
 				newGame.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent we) {
-						onGameEnd(false);
+						onGameEnd(false); //changes winOrLose variable to false (indicating a lost game) when window is X-ed out
 					}
 				});
 			}
@@ -112,7 +112,7 @@ public class MainMenu extends JFrame {
 		setContentPane(pane);
 
 		setSize(640, 480);
-		setLocationRelativeTo(null);
+		setLocationRelativeTo(null); //centers the window on the computer screen
 		setTitle("Minesweeper Game");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
