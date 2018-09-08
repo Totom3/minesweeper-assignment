@@ -28,7 +28,7 @@ import javax.swing.SwingConstants;
  */
 public class MainMenu extends JFrame {
 
-	public static final boolean DEBUG_MODE = true;
+	public static boolean DEBUG_MODE = false;
 	private static final Font TITLE_FONT = new Font("Courier New", Font.BOLD, 48);
 	private static final Font DEFAULT_FONT = new Font("Courier New", Font.ITALIC, 24);
 
@@ -73,15 +73,15 @@ public class MainMenu extends JFrame {
 		
 		
 		
-		//when gameInProgress = true, display: "Game in Progress", AND disable the start button
-		//when it's false, display "Start a new game"
+		//When gameInProgress = true, display: "Game in Progress", AND disable the start button.
+		//When it's false, display "Start a new game".
 		startGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				GameBoard newGame = new GameBoard(MainMenu.this);
 				
 				// Disable Start Game button until game is ended (check onGameEnd method)
 				startGame.setEnabled(false); 
-				gameInProgressLabel.setText("Game is in progress!");
+				gameInProgressLabel.setText("Game is in progress!"); //This will change the text on the bottom (from its original: "^ Start a new game ^")
 				gameInProgressLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				
 				// Start new game
@@ -96,10 +96,13 @@ public class MainMenu extends JFrame {
 		});
 		
 		itemDebug.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent ev) {
-			//change debug value
-        }
-    });
+			@Override
+			public void actionPerformed(ActionEvent ev) {
+				DEBUG_MODE = !DEBUG_MODE;
+				//change debug value
+			}
+		});
+		
 		JPanel pane = new JPanel(new GridLayout(5, 1));
 		pane.add(titleLabel);
 		pane.add(startGame);
