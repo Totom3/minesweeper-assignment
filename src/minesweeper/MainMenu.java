@@ -79,8 +79,9 @@ public class MainMenu extends JFrame {
 			public void actionPerformed(ActionEvent ae) {
 				GameBoard newGame = new GameBoard(MainMenu.this);
 				
-				// Disable Start Game button until game is ended (check onGameEnd method)
-				startGame.setEnabled(false); 
+				
+				startGame.setEnabled(false); // Disable Start Game button until game is ended (check onGameEnd method)
+				itemDebug.setEnabled(false); // Disable menu item when game is in progress
 				gameInProgressLabel.setText("Game is in progress!"); //This will change the text on the bottom (from its original: "^ Start a new game ^")
 				gameInProgressLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				
