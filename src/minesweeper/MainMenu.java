@@ -91,6 +91,7 @@ public class MainMenu extends JFrame {
 					@Override
 					public void windowClosing(WindowEvent we) {
 						onGameEnd(false); //changes winOrLose variable to false (indicating a lost game) when window is X-ed out
+						
 					}
 				});
 			}
@@ -132,7 +133,7 @@ public class MainMenu extends JFrame {
 	public void onGameEnd(boolean winOrLose) {
 
 		startGame.setEnabled(true); //re-enables the "start game" button when the game ends
-
+		itemDebug.setEnabled(true); //re enables button when game is closed
 		if (winOrLose) {
 			winCounter++;
 			gamesWonLabel.setText("Games won: " + winCounter);
