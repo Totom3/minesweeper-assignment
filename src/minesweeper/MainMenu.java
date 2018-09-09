@@ -142,7 +142,7 @@ public class MainMenu extends JFrame {
 		}
 
 		try {
-			File winSound = new File(winOrLose ? "Win.wav" : "Lose.wav"); //plays victory/defeat sound depending on boolean value of winOrLose
+			File winSound = new File(winOrLose ? "Win.wav" : "Lose.wav"); //plays victory/defeat sound depending on boolean value of winOrLose.
 			AudioInputStream aisWin = AudioSystem.getAudioInputStream(winSound);
 			Clip winClip = AudioSystem.getClip();
 			winClip.open(aisWin);
