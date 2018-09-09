@@ -14,11 +14,11 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -35,7 +35,7 @@ public class MainMenu extends JFrame {
 	private final JButton startGame;
 	private final JMenuBar menuBar;
 	private final JMenu menu;
-	private final JMenuItem itemDebug;
+	private final JCheckBoxMenuItem itemDebug;
 	private final JLabel titleLabel;
 	private final JLabel gamesWonLabel;
 	private final JLabel gamesLostLabel;
@@ -53,7 +53,7 @@ public class MainMenu extends JFrame {
 		this.gameInProgressLabel = new JLabel("^ Start a new game ^");
 		this.menuBar = new JMenuBar();
 		this.menu = new JMenu("Options");
-		this.itemDebug = new JMenuItem("Enable Debug Mode");
+		this.itemDebug = new JCheckBoxMenuItem("Enable Debug Mode");
 		menuBar.add(menu);
 		menu.add(itemDebug);
 		this.setJMenuBar(menuBar);
@@ -90,8 +90,7 @@ public class MainMenu extends JFrame {
 				newGame.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent we) {
-						onGameEnd(false); //changes winOrLose variable to false (indicating a lost game) when window is X-ed out
-						
+						onGameEnd(false); //changes winOrLose variable to false (indicating a lost game) when window is X-ed out						
 					}
 				});
 			}
