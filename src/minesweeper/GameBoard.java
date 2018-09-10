@@ -3,6 +3,7 @@ package minesweeper;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -13,8 +14,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
+ * The game board GUI class. Creates, initializes, and maintains the game board.
  *
  * @author Frankie
+ * @author Tomer Moran
  */
 public class GameBoard extends JFrame {
 
@@ -59,8 +62,8 @@ public class GameBoard extends JFrame {
 	 * Constructs the game board GUI.
 	 */
 	private void initGUI() {
-		final int buttonSize = 100;
-		final int screenSize = GameLogic.BOARD_SIZE * buttonSize;
+		final int screenSize = 1000;
+		final int buttonSize = screenSize / GameLogic.BOARD_SIZE;
 
 		JPanel panel = new JPanel(new GridLayout(GameLogic.BOARD_SIZE, GameLogic.BOARD_SIZE));
 		setContentPane(panel);
@@ -137,12 +140,6 @@ public class GameBoard extends JFrame {
 				}
 			} else if (isCtrlPressed) {
 				// Flag the tile
-				// Prevent flagging while in debug mode
-				if (MainMenu.DEBUG_MODE) {
-					System.out.println("Cannot flag tiles when in debug mode");
-					return;
-				}
-
 				JButton button = boardButtons[x][y];
 				Tile tile = gameLogic.getBoard()[x][y];
 				switch (tile.toggleFlag()) {
@@ -160,7 +157,7 @@ public class GameBoard extends JFrame {
 			if (gameLogic.getBoard()[x][y].getStatus() == TileStatus.FLAGGED) {
 				return;
 			}
-			
+
 			// Trigger a click
 			ClickResult result = gameLogic.onClick(x, y);
 			switch (result.getResult()) {

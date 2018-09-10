@@ -2,8 +2,6 @@ package minesweeper;
 
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -23,8 +21,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 /**
+ * Starts the program and the game; and keeps track of wins and losses. This
+ * also displays and handles the main menu window, and offers an option to enter
+ * and exit debug mode.
  *
  * @author Frankie
+ * @author Tomer Moran
  */
 public class MainMenu extends JFrame {
 
@@ -70,40 +72,32 @@ public class MainMenu extends JFrame {
 		gamesWonLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		gamesLostLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		gameInProgressLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		
-		
+
 		//When gameInProgress = true, display: "Game in Progress", AND disable the start button.
 		//When it's false, display "Start a new game".
-		startGame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				GameBoard newGame = new GameBoard(MainMenu.this);
-				
-				
-				startGame.setEnabled(false); // Disable Start Game button until game is ended (check onGameEnd method)
-				itemDebug.setEnabled(false); // Disable menu item when game is in progress
-				gameInProgressLabel.setText("Game is in progress!"); //This will change the text on the bottom (from its original: "^ Start a new game ^")
-				gameInProgressLabel.setHorizontalAlignment(SwingConstants.CENTER);
-				
-				// Start new game
-				newGame.onStart();
-				newGame.addWindowListener(new WindowAdapter() {
-					@Override
-					public void windowClosing(WindowEvent we) {
-						onGameEnd(false); //changes winOrLose variable to false (indicating a lost game) when window is X-ed out						
-					}
-				});
-			}
+		startGame.addActionListener((ae) -> {
+			GameBoard newGame = new GameBoard(MainMenu.this);
+
+			startGame.setEnabled(false); // Disable Start Game button until game is ended (check onGameEnd method)
+			itemDebug.setEnabled(false); // Disable menu item when game is in progress
+			gameInProgressLabel.setText("Game is in progress!"); //This will change the text on the bottom (from its original: "^ Start a new game ^")
+			gameInProgressLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+			// Start new game
+			newGame.onStart();
+			newGame.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent we) {
+					onGameEnd(false); //changes winOrLose variable to false (indicating a lost game) when window is X-ed out
+				}
+			});
 		});
-		
-		itemDebug.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ev) {
-				DEBUG_MODE = !DEBUG_MODE;
-				//change debug value
-			}
+
+		itemDebug.addActionListener((ae) -> {
+			// Toggle debug mode
+			DEBUG_MODE = !DEBUG_MODE;
 		});
-		
+
 		JPanel pane = new JPanel(new GridLayout(5, 1));
 		pane.add(titleLabel);
 		pane.add(startGame);

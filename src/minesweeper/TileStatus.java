@@ -1,7 +1,9 @@
 package minesweeper;
 
 /**
+ * Enumerates all possible tile status.
  *
+ * @author Frankie
  * @author Tomer Moran
  */
 public enum TileStatus {

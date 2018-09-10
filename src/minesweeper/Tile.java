@@ -1,7 +1,18 @@
 package minesweeper;
 
 /**
+ * Represents a board tile. Each tile has two properties (except for their
+ * coordinates):
+ * <ul>
+ * <li>A status: COVERED, UNCOVERED, or FLAGGED. Represents the state of the
+ * tile and how it should be displayed. The status of a tile can change
+ * throughout the game.</li>
+ * <li>A rank: the number of nearby bombs, or -1 if the tile is a bomb itself.
+ * The rank of a tile cannot change throughout a game.</li>
+ * </ul>
  *
+ *
+ * @author Frankie
  * @author Tomer Moran
  */
 public class Tile {

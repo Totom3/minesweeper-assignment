@@ -3,7 +3,14 @@ package minesweeper;
 import java.util.Set;
 
 /**
+ * Represents the result of a tile click.
+ * <p>
+ * When the player clicks on a mine, they can either (1) win the game; (2) lose
+ * the game; (3) or continue playing. In the latter case, some tiles get
+ * uncovered. This class contains these two pieces of data so that
+ * {@link GameLogic} can more easily transmit the result to {@link GameBoard}.
  *
+ * @author Frankie
  * @author Tomer Moran
  */
 public class ClickResult {

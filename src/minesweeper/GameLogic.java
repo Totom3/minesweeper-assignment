@@ -5,7 +5,11 @@ import java.util.Random;
 import java.util.Set;
 
 /**
+ * Handles the board generation and the logic behind tile clicks. Communicates
+ * the results to {@link GameBoard} so that it can display the board
+ * appropriately.
  *
+ * @author Frankie
  * @author Tomer Moran
  */
 public class GameLogic {
@@ -159,7 +163,7 @@ public class GameLogic {
 	}
 
 	private static boolean isCoordValid(int x) {
-		return x >= 0 && x < 8;
+		return x >= 0 && x < GameLogic.BOARD_SIZE;
 	}
 
 	private static final class Coordinates {
